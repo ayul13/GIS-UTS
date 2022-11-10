@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>UTS</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="asset/leaflet/leaflet.css">
+	<script src="asset/leaflet/leaflet.js"></script>
+	<script src="json/kecpraya.js"></script>
+	<style>
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin:0;
+			padding: 0;
+		}
+		#map {
+			width: 100%;
+			height:100%;
+		}
+		.leaflet-popup-content {
+			width:auto !important;
+		}
+
+	</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+	//##############################################//
+	// Membuat Icon Pada Peta 
+	//##############################################//
+	var mapIcon = L.Icon.extend({
+	    iconSize:     [32, 37]
+	});
+	var officeIcon = new mapIcon({iconUrl: 'icon/office-building.png'}),
+	    rsIcon = new mapIcon({iconUrl: 'icon/hospital-building.png'}),
+        tamanIcon = new mapIcon({iconUrl: 'icon/playground.png'}),
+        bupatiIcon = new mapIcon({iconUrl: 'icon/congress.png'}),
+        policeIcon = new mapIcon({iconUrl: 'icon/police.png'}),
+	    damIcon = new mapIcon({iconUrl: 'icon/dam.png'});
+        
+	//##############################################//
+	// Mendeklarasikan Marker office dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+	
+	var of1 = L.marker([-8.6128812, 116.3103311],{icon: officeIcon}).bindPopup("Kantor Camat Batukliang <img src='img/batukliang.jpg' alt='Kantor Camat Batukliang' width='350px'/>");
+	var of2 = L.marker([-8.7588949, 116.3245473],{icon: officeIcon}).bindPopup("Kantor Camat Batukliang Utara <img src='img/BU.jpg' alt='Kantor Camat Batukliang Utara' width='350px'/>");
+	var of3 = L.marker([-8.6942821, 116.3995881],{icon: officeIcon}).bindPopup("Kantor Camat Janapria <img src='img/janapria.jpg' alt='Kantor Camat Janapria' width='350px'/>");
+	var of4 = L.marker([-8.6525193, 116.1979991],{icon: officeIcon}).bindPopup("Kantor Camat Jonggat <img src='img/jonggat.jfif' alt='Kantor Camat Jonggat' width='350px'/>");
+    var of5 = L.marker([-8.6343426, 116.3548378],{icon: officeIcon}).bindPopup("Kantor Camat Kopang <img src='img/kopang.jfif' alt='Kantor Camat Kopang' width='350px'/>");
+    var of6 = L.marker([-8.7237617, 116.2390471],{icon: officeIcon}).bindPopup("Kantor Camat Praya <img src='img/praya.jpg' alt='Kantor Camat Praya' width='350px'/>");
+    var of7 = L.marker([-8.742301, 116.2410837],{icon: officeIcon}).bindPopup("Kantor Camat Praya Barat <img src='img/prabar.jpg' alt='Kantor Camat Praya Barat' width='350px'/>");
+    var of8 = L.marker([-8.7385415, 116.2015728],{icon: officeIcon}).bindPopup("Kantor Camat Praya Barat Daya <img src='img/prayabarda.jpg' alt='Kantor Camat Praya Barat Daya' width='350px'/>");
+    var of9 = L.marker([-8.7340447, 116.316331],{icon: officeIcon}).bindPopup("Kantor Camat Praya Tengah <img src='img/prateng.jpg' alt='Kantor Camat Praya Tengah' width='350px'/>");
+    var of10 = L.marker([-8.7614541, 116.3561055],{icon: officeIcon}).bindPopup("Kantor Camat Praya Timur <img src='img/pratim.jpg' alt='Kantor Camat Praya Timur' width='350px'/>");
+    var of11= L.marker([-8.6190565, 116.2517066],{icon: officeIcon}).bindPopup("Kantor Camat Pringgarata <img src='img/pringgarata.jpg' alt='Kantor Camat Pringgarata' width='350px'/>");
+    var of12 = L.marker([-8.8004563, 116.292598],{icon: officeIcon}).bindPopup("Kantor Camat Pujut <img src='img/pujut.jpeg' alt='Kantor Camat Pujut' width='350px'/>");
+
+	var office = L.layerGroup([of1, of2, of3, of4, of5, of6, of7, of8, of9, of10, of11, of12]);
+
+	//##############################################//
+	// Mendeklarasikan Marker Kesehatan dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+	var rs1 = L.marker([-8.7019832, 116.2958626],{icon: rsIcon}).bindPopup("RSUD Praya <img src='img/rsud.jpg' alt='RSUD Praya' width='350px'/>");
+	var rs2 = L.marker([-8.7060444, 116.2726082],{icon: rsIcon}).bindPopup("Puskesmas Praya <img src='img/puskesmas.jpg' alt='Puskesmas Praya' width='350px'/>");
+
+	var kesehatan = L.layerGroup([rs1, rs2]);
+
+	//##############################################//
+	// Mendeklarasikan Marker Taman dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+	var tmn1 = L.marker([-8.7045539, 116.2712998],{icon: rsIcon}).bindPopup("Alun-Alun Tastura <img src='img/alun.jpg' alt='Alun-Alun Tastura' width='350px'/>");
+	var tmn2 = L.marker([-8.7139106, 116.2869397],{icon: rsIcon}).bindPopup("Taman Biao <img src='img/biao.jfif' alt='Taman Biao' width='350px'/>");
+    var tmn3 = L.marker([-8.7141343, 116.2639882],{icon: rsIcon}).bindPopup("Tonjeng Beru Smart Garden <img src='img/tonjeng.jfif' alt='rTonjeng Beru Smart Garden' width='350px'/>");
+
+	var taman = L.layerGroup([tmn1, tmn2, tmn3]);
+
+    //##############################################//
+	// Mendeklarasikan Marker Kantor Bupati dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+    var bpt = L.marker([-8.7061917, 116.2691035],{icon: bupatiIcon}).bindPopup("Kantor Bupati Lombok Tengah <img src='img/bupati.jfif' alt='Kantor Bupati Lombok Tengah' width='350px'/>");
+    var bupati = L.layerGroup([bpt]);
+
+    //##############################################//
+	// Mendeklarasikan Marker Taman dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+    var pls = L.marker([-8.7093713, 116.2793799],{icon: policeIcon}).bindPopup("Polres Lombok Tengah <img src='img/polres.jpg' alt='Polres Lombok Tengah' width='350px'/>");
+    var polres = L.layerGroup([pls]);
+
+    //##############################################//
+	// Mendeklarasikan Marker Waduk dan membuatnya menjadi 
+	// Layer Group
+	//##############################################//
+    var wdk1 = L.marker([-8.7320897, 116.2726254],{icon: damIcon}).bindPopup("Bendungan Batujai <img src='img/batujai.jpg' alt='Bendungan Batujai' width='350px'/>");
+    var wdk2 = L.marker([-8.7575494, 116.1880415],{icon: damIcon}).bindPopup("Bendungan Pengge  <img src='img/pengga.jpg' alt='Bendungan Pengge' width='350px'/>");
+    var waduk = L.layerGroup([wdk1, wdk2]);
+
+
+	//##############################################//
+	// Membuat BaseMap Pada Peta
+	//##############################################//
+
+	var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+	var streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
+
+	//##############################################//
+	// Mendeklarasikan Peta kedalam Id Map
+	//##############################################//
+	var map = L.map('map', {
+		center: [-8.6416479, 116.3522657],
+		zoom: 11,
+		layers: [streets]
+	});
+
+	//##############################################//
+	// Mendeklarasikan BaseLayer Pada Map yakni Street
+	//##############################################//
+	var baseLayers = {
+		"Streets": streets
+	};
+
+	var kelpraya = L.geoJSON([kelpraya], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var leneng = L.geoJSON([leneng], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+
+	});
+	var prapen = L.geoJSON([prapen], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+		
+	});
+	var panjisari = L.geoJSON([panjisari], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+		
+	});
+	var batukliangutara = L.geoJSON([btklu], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var batukliang = L.geoJSON([btkl], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var kopang = L.geoJSON([kpg], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var janapria = L.geoJSON([jnp], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var jonggat = L.geoJSON([jgt], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+
+	var pringarata = L.geoJSON([pggt], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var praya = L.geoJSON([praya], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var prabarda = L.geoJSON([prabarda], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var prabar = L.geoJSON([prabar], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+
+	var prateng = L.geoJSON([prateng], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var pratim = L.geoJSON([pratim], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+	var pujut = L.geoJSON([pjt], {
+		style:function(feature){
+			return feature.properties && feature.properties.style;
+		}
+	});
+
+	//##############################################//
+	// Deklarasi untuk memilih Icon yang akan ditampilkan
+	//##############################################//
+	var overlays = {
+		"office": office,
+		"kesehatan": kesehatan,
+		"taman" : taman,
+        "bupati" : bupati,
+        "polres" : polres,
+        "waduk" : waduk,
+		"Kec. Batuklaiang Utara": batukliangutara,
+		"Kec. Batukliang": batukliang,
+		"Kec. Kopang": kopang,
+		"Kec. Janapria": janapria,
+		"Kec. Pringarata": pringarata,
+		"Kec. Jonggat": jonggat,
+		"Kec. Praya": praya,
+		"Kec. Praya Barat Daya": prabarda,
+		"Kec. Praya Barat": prabar,
+		"Kec. Praya Tengah": prateng,
+		"Kec. Praya Timur": pratim,
+		"Kec. Pujut": pujut,
+	};
+
+	//##############################################//
+	// Menambah  variabel baselayaer dan overlay kedalam map
+	//##############################################//
+	L.control.layers(baseLayers, overlays).addTo(map);
+
+	//##############################################//
+	// Mengambil data geospesial wilayak kecamatan praya
+	//##############################################//
+	L.geoJSON([btskab], {
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		}
+	}).addTo(map);
+</script>
+</body>
+</html>
